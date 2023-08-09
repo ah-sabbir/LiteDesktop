@@ -1,0 +1,198 @@
+const { app, BrowserWindow } = require('electron');
+const { RTCPeerConnection, RTCDataChannel } = require('webrtc');
+const { Peer } = require('peerjs');
+
+let localClient;
+let remoteClient;
+
+const createLocalClient = () => {
+  localClient = new Peer();
+  localClient.on('connection', (remote) => {
+    console.log('Remote client connected');
+    remoteClient = remote;
+  });
+  localClient.on('error', (error) => {
+    console.log('Error connecting to remote client:', error);
+  });
+};
+
+const createRemoteClient = () => {
+  remoteClient = new Peer();
+  remoteClient.on('connection', (local) => {
+    console.log('Local client connected');
+    localClient = local;
+  });
+  remoteClient.on('error', (error) => {
+    console.log('Error connecting to local client:', error);
+  });
+};
+
+const createWebRTCConnection = async () => {
+  const localConnection = new RTCPeerConnection();
+  const remoteConnection = new RTCPeerConnection();
+
+  const localDataChannel = await localConnection.createDataChannel('data');
+  const remoteDataChannel = await remoteConnection.createDataChannel('data');
+
+  localConnection.ondatachannel = (event) => {
+    if (event.channel.label === 'data') {
+      const data = event.data;
+      console.log('Received data from remote client:', data);
+    }
+  };
+
+  remoteConnection.ondatachannel = (event) => {
+    if (event.channel.label === 'data') {
+      const data = event.data;
+      console.log('Received data from local client:', data);
+    }
+  };
+
+  localConnection.addStream(await navigator.mediaDevices.getUserMedia({ video: true, audio: true }));
+  remoteConnection.addStream(await navigator.mediaDevices.getUserMedia({ video: true, audio: true }));
+
+  localConnection.oniceconnectionstatechange = () => {
+    if (localConnection.iceConnectionState === 'connected') {
+      console.log('WebRTC connection established');
+      remoteClient.send('hello');
+    }
+  };
+
+  remoteConnection.oniceconnectionstatechange = () => {
+    if (remoteConnection.iceConnectionState === 'connected') {
+      console.log('WebRTC connection established');
+      localClient.send('hello');
+    }
+  };
+
+  localConnection.start();
+  remoteConnection.start();
+};
+
+const main = async () => {
+  createLocalClient();
+  createRemoteClient();
+  await createWebRTCConnection();
+
+  const win = new BrowserWindow({
+    width: 800,
+    height: 600,
+  });
+
+  win.loadURL('http://localhost:3000');
+
+  app.on('ready', () => {
+    console.log('App is ready');
+  });
+
+  app.on('window-all-closed', () => {
+    app.quit();
+  });
+};
+
+main();
+
+
+
+
+const { app, BrowserWindow } = require('electron');
+const { RTCPeerConnection, RTCDataChannel } = require('webrtc');
+const { Peer } = require('peerjs');
+
+let localClient;
+let remoteClient;
+
+const createLocalClient = () => {
+  localClient = new Peer();
+  localClient.on('connection', (remote) => {
+    console.log('Remote client connected');
+    remoteClient = remote;
+  });
+  localClient.on('error', (error) => {
+    console.log('Error connecting to remote client:', error);
+  });
+};
+
+const createRemoteClient = () => {
+  remoteClient = new Peer();
+  remoteClient.on('connection', (local) => {
+    console.log('Local client connected');
+    localClient = local;
+  });
+  remoteClient.on('error', (error) => {
+    console.log('Error connecting to local client:', error);
+  });
+};
+
+const createWebRTCConnection = async () => {
+  const localConnection = new RTCPeerConnection();
+  const remoteConnection = new RTCPeerConnection();
+
+  const localDataChannel = await localConnection.createDataChannel('data');
+  const remoteDataChannel = await remoteConnection.createDataChannel('data');
+
+  localConnection.ondatachannel = (event) => {
+    if (event.channel.label === 'data') {
+      const data = event.data;
+      console.log('Received data from remote client:', data);
+    }
+  };
+
+  remoteConnection.ondatachannel = (event) => {
+    if (event.channel.label === 'data') {
+      const data = event.data;
+      console.log('Received data from local client:', data);
+    }
+  };
+
+  localConnection.addStream(await navigator.mediaDevices.getUserMedia({ video: true, audio: true }));
+  remoteConnection.addStream(await navigator.mediaDevices.getUserMedia({ video: true, audio: true }));
+
+  localConnection.oniceconnectionstatechange = () => {
+    if (localConnection.iceConnectionState === 'connected') {
+      console.log('WebRTC connection established');
+      remoteClient.send('hello');
+    }
+  };
+
+  remoteConnection.oniceconnectionstatechange = () => {
+    if (remoteConnection.iceConnectionState === 'connected') {
+      console.log('WebRTC connection established');
+      localClient.send('hello');
+    }
+  };
+
+  localConnection.onclose = () => {
+    console.log('Local connection closed');
+  };
+
+  remoteConnection.onclose = () => {
+    console.log('Remote connection closed');
+  };
+
+  localConnection.start();
+  remoteConnection.start();
+};
+
+const main = async () => {
+  createLocalClient();
+  createRemoteClient();
+  await createWebRTCConnection();
+
+  const win = new BrowserWindow({
+    width: 800,
+    height: 600,
+  });
+
+  win.loadURL('http://localhost:3000');
+
+  app.on('ready', () => {
+    console.log('App is ready');
+  });
+
+  app.on('window-all-closed', () => {
+    app.quit();
+  });
+};
+
+main();
