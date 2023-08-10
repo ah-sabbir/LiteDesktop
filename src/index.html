@@ -1,12 +1,35 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Hello World!</title>
-
-  </head>
-  <body>
-    <h1>💖 Hello World!</h1>
-    <p>Welcome to your Electron application.</p>
-  </body>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnyDesk Clone</title>
+<!-- <link rel="stylesheet" href="./index.css"> -->
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Lite Desktop Share</h1>
+      <p>Connect to a remote computer</p>
+    </div>
+    <div class="input-box">
+      <input type="text" id="peer-id" class="input-field" placeholder="Enter remote address...">
+      <button class="connect-btn" id="peer-connect" >Connect</button>
+    </div>
+    <div class="card-list">
+      <div class="card">
+        <h2>Remote Computer 1</h2>
+        <p>Status: Connected</p>
+        <p>Address: 123.456.789.1</p>
+      </div>
+      <div class="card">
+        <h2>Remote Computer 2</h2>
+        <p>Status: Disconnected</p>
+        <p>Address: 987.654.321.1</p>
+      </div>
+      <!-- Add more cards as needed -->
+      <video id="remote-video" autoplay></video>
+    </div>
+  </div>
+</body>
 </html>

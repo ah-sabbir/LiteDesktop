@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "electron-squirrel-startup": "^1.0.0",
+    "electron-window-state": "^5.0.3",
     "peerjs": "^1.4.7",
     "webrtc": "^1.14.1"
   }
