@@ -1,23 +1,35 @@
+//  This is home display
+
 import { Peer } from 'peerjs';
-import {getInterfaces} from 'net';
+// import {getInterfaces} from 'net';
+
+let peer:any;
+let remoteId:string;
 
 document.addEventListener('DOMContentLoaded', () => {
     const button = document.getElementById('peer-connect');
-    const remoteVideoRef = document.getElementById('remote-video');
-    let peer:any;
+    const shareButton = document.getElementById('share-connect');
+    const peerIdLabel = document.getElementById('my-peer-id');
+
+    peer = new Peer();
+
+    peer.on('open', (peerId:string) => {
+        remoteId = peerId
+    });
+
+    shareButton.addEventListener('click', async ()=>{
+        peerIdLabel.style.display = "block";
+        peerIdLabel.innerHTML = `<span>My Remote Address</span><br/><span id="remote-address">${remoteId && remoteId}</span>`;
+    })
 
     button.addEventListener('click', async () => {
-        peer = new Peer();
 
-        const remoteId = peer.on('open', (peerId:string) => {
-            return peerId;
-        });
 
-        console.log("🚀 ~ file: preload.ts:15 ~ peer.on ~ remoteId:", remoteId)
+        console.log("🚀 ~ file: preload.ts:15 ~ peer.on ~ remoteId:", )
 
-        const interfaces = getInterfaces();
+        // const interfaces = getInterfaces();
 
-        console.log("🚀 ~ file: preload.ts:15 ~ peer.on ~ peer", interfaces)
+        // console.log("🚀 ~ file: preload.ts:15 ~ peer.on ~ peer", interfaces)
 
         // navigator.mediaDevices.getDisplayMedia({ video: true, audio: false }).then((mediaStream) => {
         //     const call = peer.call('test', mediaStream);
