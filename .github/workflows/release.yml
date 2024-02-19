@@ -1,7 +1,6 @@
 name: Release app
 on:
   - push
-  - pull_request
 
 jobs:
   build:
@@ -10,12 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        os:
-          [
-            { name: 'linux', image: 'ubuntu-latest' },
-            { name: 'windows', image: 'windows-latest' },
-            { name: 'macos', image: 'macos-latest' },
-          ]
+        os:[macos-latest, ubuntu-latest, windows-latest]
           
     steps:
       - name: Github checkout
