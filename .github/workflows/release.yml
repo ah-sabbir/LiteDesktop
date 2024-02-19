@@ -1,3 +1,4 @@
+# .github/workflows/release.yml
 name: Release app
 on:
   workflow_dispatch:
@@ -20,7 +21,7 @@ jobs:
         with:
           node-version: 20
       - run: yarn
-      - name: build app
+      - name: Publish app
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: yarn build
+        run: yarn publish

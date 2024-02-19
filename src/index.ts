@@ -17,9 +17,10 @@ declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 // let remoteClient: any;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) {
-  app.quit();
-}
+// if (require('electron-squirrel-startup')) {
+//   app.quit();
+// }
+if (require('electron-squirrel-startup') === true) app.quit();
 
 
 
