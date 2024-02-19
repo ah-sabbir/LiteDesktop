@@ -1,6 +1,7 @@
 # .github/workflows/release.yml
 name: Release app
 on:
+  push
   workflow_dispatch:
 jobs:
   build:
