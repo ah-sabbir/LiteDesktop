@@ -1,29 +1,29 @@
-name: Build app
-on:
-  - push
+# name: Build app
+# on:
+#   - push
 
-jobs:
-  build:
-    runs-on: ${{ matrix.os }}
+# jobs:
+#   build:
+#     runs-on: ${{ matrix.os }}
 
 
-    strategy:
-      matrix:
-        os:[macos-latest, ubuntu-latest, windows-latest]
+#     strategy:
+#       matrix:
+#         os:[macos-latest, ubuntu-latest, windows-latest]
           
-    steps:
-      - name: Github checkout
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Github checkout
+#         uses: actions/checkout@v4
 
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+#       - name: Use Node.js
+#         uses: actions/setup-node@v4
 
-        with:
-          node-version: 20
+#         with:
+#           node-version: 20
 
-      - run: yarn
-      - name: build app
+#       - run: yarn
+#       - name: build app
       
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: yarn build
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+#         run: yarn build
