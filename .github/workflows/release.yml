@@ -1,29 +1,27 @@
+# .github/workflows/release.yml
 name: Release app
 on:
+  - pull_request
   - push
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-
-
     strategy:
       matrix:
-        os:[macos-latest, ubuntu-latest, windows-latest]
-          
+        os:
+          [
+            { name: 'linux', image: 'ubuntu-latest' },
+          ]
+    runs-on: 'ubuntu-latest'
     steps:
       - name: Github checkout
         uses: actions/checkout@v4
-
       - name: Use Node.js
         uses: actions/setup-node@v4
-
         with:
           node-version: 20
-
       - run: yarn
-      - name: build app
-      
+      - name: Publish app
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: yarn publish
+        run: yarn build
