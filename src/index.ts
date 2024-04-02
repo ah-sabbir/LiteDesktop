@@ -57,7 +57,7 @@ const createWindow = async () => {
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
       nodeIntegration: true,
-      contextIsolation: false,
+      contextIsolation: true,
     },
   });
 
@@ -65,16 +65,40 @@ const createWindow = async () => {
   ipcMain.handle('get-sources', () => {
     return desktopCapturer.getSources({ types: ['window', 'screen'] }).then(async sources => {
       for (const source of sources) {
-        if (source.name === 'Electron') {
+        if (source.name === 'Entire screen') {
           return source.id;
         }
       }
     })
    });
+  // const getSource = () => {
+  //   return desktopCapturer.getSources({ types: ['window', 'screen'] }).then(async sources => {
+  //     for (const source of sources) {
+  //       if (source.name === 'Electron') {
+  //         return source.id;
+  //       }
+  //     }
+  //   })
+  //  };
 
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show()
+    mainWindow.setPosition(0,0)
+    // setTimeout(()=>{
+    //   desktopCapturer.getSources({ types: ['window', 'screen'] }).then(async sources => {
+    //     for (const source of sources) {
+    //       // console.log("this is window id", source)
+    //       if (source.name === 'Entire screen') {
+    //         console.log("this is window id", source.id)
+    //       }
+    //     }
+    //   })
+    // }, 5000)
+  })
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();

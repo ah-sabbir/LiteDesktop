@@ -1,11 +1,21 @@
 import Peer from "peerjs";
 
-const { contextBridge, ipcRenderer } = require('electron')
+const { contextBridge, ipcRenderer } = require('electron');
 
-
+let screen_id:any;
 
 const button = document.getElementById('peer-connect');
 
+
+ipcRenderer.invoke('get-sources').then((result) => {
+  // ...
+  // console.log(result)
+  screen_id = result;
+})
+
+contextBridge.exposeInMainWorld('electronAPI', {
+  getScreeId: ()=> screen_id,
+})
 
 
 // button.addEventListener('click',async()=>{
